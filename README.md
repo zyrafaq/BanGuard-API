@@ -1,2 +1,2 @@
-# [BanGuard](https://banguard.uk) oauth2
+# [BanGuard](https://banguard.uk) API
 BanGuard API python wrapper
