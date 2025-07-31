@@ -15,7 +15,7 @@ class Client:
         self._session.headers.update({"Authorization": self._token})
 
         if check_token and not self.is_token_valid():
-            raise InvalidTokenError()
+            raise AuthenticationError("Invalid token provided.")
 
     def _request(self, method: str, endpoint: str, **kwargs):
         """Helper method to send requests and handle errors."""

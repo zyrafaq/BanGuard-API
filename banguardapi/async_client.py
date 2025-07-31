@@ -21,7 +21,7 @@ class Client:
         if self._check_token:
             if not await self.is_token_valid():
                 await self._session.close()
-                raise InvalidTokenError()
+                raise AuthenticationError("Invalid token provided.")
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

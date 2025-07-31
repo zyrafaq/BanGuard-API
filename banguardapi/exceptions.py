@@ -5,10 +5,6 @@ class APIError(Exception):
         self.message = message
         super().__init__(self.message)
 
-class InvalidTokenError(APIError):
-    def __init__(self, message="Invalid token provided."):
-        super().__init__(message)
-
 class AuthenticationError(APIError):
     def __init__(self, message="Authentication failed."):
         super().__init__(message)
