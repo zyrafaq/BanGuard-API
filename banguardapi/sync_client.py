@@ -1,9 +1,9 @@
 import requests
 
-from ban import Ban
-from connection_code import ConnectionCode
-from exceptions import *
-from terraria_player import TerrariaPlayer
+from .ban import Ban
+from .connection_code import ConnectionCode
+from .exceptions import *
+from .terraria_player import TerrariaPlayer
 
 
 class Client:

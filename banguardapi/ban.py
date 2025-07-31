@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
-from server import Server
-from terraria_player import TerrariaPlayer
+from .server import Server
+from .terraria_player import TerrariaPlayer
 
 
 @dataclass

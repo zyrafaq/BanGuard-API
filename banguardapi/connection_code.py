@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from terraria_player import TerrariaPlayer
+from .terraria_player import TerrariaPlayer
 
 @dataclass
 class ConnectionCode:
