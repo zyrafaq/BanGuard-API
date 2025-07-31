@@ -3,14 +3,16 @@ from terraria_player import TerrariaPlayer
 
 
 class Ban:
-    def __init__(self, player: TerrariaPlayer, server: Server, category: str):
+    def __init__(self, id, player: TerrariaPlayer, category: str, server: Server=None):
         """
         Initializes a Ban instance.
 
+        :param id: Unique identifier for the ban.
         :param player: The player being banned.
-        :param server: The server from which the player is banned.
         :param category: The BanGuard ban category.
+        :param server: The server from which the player is banned.
         """
+        self.id = id
         self.player = player
         self.server = server
         self.category = category

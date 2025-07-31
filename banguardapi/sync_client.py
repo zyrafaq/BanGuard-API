@@ -3,7 +3,6 @@ import requests
 from ban import Ban
 from connection_code import ConnectionCode
 from exceptions import InvalidTokenError
-from server import Server
 from terraria_player import TerrariaPlayer
 
 
@@ -57,8 +56,7 @@ class Client:
             "category": category,
         }
         response = self._request("POST", "ban-player", data=data)
-        server = Server(response["ban"]["server"]["id"], response["ban"]["server"]["name"])
-        return Ban(player, server, category)
+        return Ban(response["ban"]["id"], player, category)
 
     def get_player(self, player_uuid: str) -> TerrariaPlayer:
         """Fetch a player from the API"""
