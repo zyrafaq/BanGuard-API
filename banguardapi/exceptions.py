@@ -14,7 +14,7 @@ class AuthenticationError(APIError):
         super().__init__(message)
 
 class PermissionDeniedError(APIError):
-    def __init__(self, message="Permission denied."):
+    def __init__(self, message="Insufficient permissions."):
         super().__init__(message)
 
 class NotFoundError(APIError):
