@@ -2,7 +2,8 @@ import requests
 
 from ban import Ban
 from connection_code import ConnectionCode
-from exceptions import InvalidTokenError
+from exceptions import InvalidTokenError, BadRequestError, AuthenticationError, PermissionDeniedError, NotFoundError, \
+    RateLimitError, ServerError, APIError, InvalidResponseError
 from terraria_player import TerrariaPlayer
 
 
@@ -20,22 +21,42 @@ class Client:
     def _request(self, method: str, endpoint: str, **kwargs):
         """Helper method to send requests and handle errors."""
         url = f"{self.BASE_URL}{endpoint}"
-        response = self._session.request(method, url, **kwargs)
 
         try:
+            response = self._session.request(method, url, timeout=10, **kwargs)
             response.raise_for_status()
-            data = response.json()
-        except requests.HTTPError as e:
+        except requests.exceptions.HTTPError as e:
+            status_code = response.status_code
             try:
                 error_msg = response.json().get("error", str(e))
             except Exception:
                 error_msg = str(e)
-            raise Exception(error_msg)
-        except ValueError:
-            raise Exception("Invalid JSON response")
 
-        if "error" in data:
-            raise Exception(data["error"])
+            if status_code == 400:
+                raise BadRequestError(error_msg)
+            elif status_code == 401:
+                raise AuthenticationError(error_msg)
+            elif status_code == 403:
+                raise PermissionDeniedError(error_msg)
+            elif status_code == 404:
+                raise NotFoundError(error_msg)
+            elif status_code == 429:
+                raise RateLimitError(error_msg)
+            elif 500 <= status_code < 600:
+                raise ServerError(error_msg)
+            else:
+                raise APIError(error_msg)
+
+        except requests.exceptions.RequestException as e:
+            raise APIError(f"Network error: {e}")
+
+        try:
+            data = response.json()
+        except ValueError:
+            raise InvalidResponseError("Invalid JSON response from the server.")
+
+        if isinstance(data, dict) and "error" in data:
+            raise APIError(data["error"])
 
         return data
 
