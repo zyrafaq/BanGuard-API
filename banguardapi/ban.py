@@ -1,21 +1,15 @@
+from dataclasses import dataclass
+from typing import Optional
 from server import Server
 from terraria_player import TerrariaPlayer
 
 
+@dataclass
 class Ban:
-    def __init__(self, id, player: TerrariaPlayer, category: str, server: Server=None):
-        """
-        Initializes a Ban instance.
-
-        :param id: Unique identifier for the ban.
-        :param player: The player being banned.
-        :param category: The BanGuard ban category.
-        :param server: The server from which the player is banned.
-        """
-        self.id = id
-        self.player = player
-        self.server = server
-        self.category = category
+    id: int
+    player: TerrariaPlayer
+    category: str
+    server: Optional[Server] = None
 
     def __str__(self):
         return f"Ban(player={self.player}, server={self.server}, category={self.category})"

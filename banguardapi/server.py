@@ -1,13 +1,9 @@
-class Server:
-    def __init__(self, id: str, name: str):
-        """
-        Initializes a Server instance.
+from dataclasses import dataclass
 
-        :param id: Unique identifier for the server.
-        :param name: Name of the server.
-        """
-        self.id = id
-        self.name = name
+@dataclass
+class Server:
+    id: str
+    name: str
 
     def __str__(self):
         return self.name

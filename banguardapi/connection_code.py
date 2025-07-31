@@ -1,23 +1,16 @@
-import datetime
-
+from dataclasses import dataclass
+from datetime import datetime
 from terraria_player import TerrariaPlayer
 
-
+@dataclass
 class ConnectionCode:
     """
     Represents a BanGuard Discord-Terraria connection code.
     """
-
-    def __init__(self, code: str, player: TerrariaPlayer, expiration_timestamp: datetime.datetime, used: bool = False):
-        """
-        Initializes a ConnectionCode instance.
-
-        :param code: The connection code.
-        """
-        self.code = code
-        self.player = player
-        self.expiration_timestamp = expiration_timestamp
-        self.used = used
+    code: str
+    player: TerrariaPlayer
+    expiration_timestamp: datetime
+    used: bool = False
 
     def __str__(self):
         return str(self.code)
@@ -31,4 +24,4 @@ class ConnectionCode:
 
         :return: True if expired, False otherwise.
         """
-        return self.expiration_timestamp < datetime.datetime.now()
+        return self.expiration_timestamp < datetime.now()
