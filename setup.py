@@ -14,6 +14,7 @@ setup(
     install_requires=[
         'requests>=2.25.1',
         'pydantic>=1.8.2',
+        'aiohttp>=3.11.2',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
