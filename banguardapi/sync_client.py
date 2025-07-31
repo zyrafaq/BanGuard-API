@@ -2,8 +2,7 @@ import requests
 
 from ban import Ban
 from connection_code import ConnectionCode
-from exceptions import InvalidTokenError, BadRequestError, AuthenticationError, PermissionDeniedError, NotFoundError, \
-    RateLimitError, ServerError, APIError, InvalidResponseError
+from exceptions import *
 from terraria_player import TerrariaPlayer
 
 
@@ -94,7 +93,10 @@ class Client:
         data = {
             "player_uuid": player_uuid,
         }
-        response = self._request("POST", "get-player", data=data)
+        try:
+            response = self._request("POST", "get-player", data=data)
+        except NotFoundError as e:
+            raise PlayerNotFoundError(str(e)) from e
         return TerrariaPlayer(response["player"]["id"], response["player"]["latest_name"], player_uuid,
                               discord_id=response["player"]["discord_id"],
                               discord_account_name=response["player"]["discord_account_name"])
