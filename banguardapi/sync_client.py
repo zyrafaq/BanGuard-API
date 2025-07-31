@@ -84,7 +84,10 @@ class Client:
         data = {
             "ban_id": ban.id,
         }
-        self._request("POST", "unban-player", data=data)
+        try:
+            self._request("POST", "unban-player", data=data)
+        except NotFoundError as e:
+            raise PlayerNotFoundError(str(e)) from e
 
     def get_player(self, player_uuid: str) -> TerrariaPlayer:
         """Fetch a player from the API"""

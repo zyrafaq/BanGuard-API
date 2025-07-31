@@ -21,6 +21,10 @@ class NotFoundError(APIError):
     def __init__(self, message="Resource not found."):
         super().__init__(message)
 
+class BanNotFoundError(NotFoundError):
+    def __init__(self, message="Ban not found."):
+        super().__init__(message)
+
 class BadRequestError(APIError):
     def __init__(self, message="Bad request sent to the API."):
         super().__init__(message)
