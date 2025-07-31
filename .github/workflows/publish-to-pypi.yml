@@ -1,9 +1,9 @@
-name: Publish to PyPI on commit
+name: Publish to PyPI
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
   build-and-publish:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Check out code
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -24,7 +24,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install build
 
-      - name: Build the package
+      - name: Build package
         run: python -m build
 
       - name: Publish to PyPI
