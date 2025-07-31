@@ -11,6 +11,10 @@ setup(
     url='https://github.com/zyrafaq/BanGuard-API/',
     packages=find_packages(),
     license='GPL-3.0',
+    install_requires=[
+        'requests>=2.25.1',
+        'pydantic>=1.8.2',
+    ],
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
