@@ -79,6 +79,13 @@ class Client:
         response = self._request("POST", "ban-player", data=data)
         return Ban(response["ban"]["id"], player, category)
 
+    def unban_player(self, ban: Ban) -> None:
+        """Unban a player"""
+        data = {
+            "ban_id": ban.id,
+        }
+        self._request("POST", "unban-player", data=data)
+
     def get_player(self, player_uuid: str) -> TerrariaPlayer:
         """Fetch a player from the API"""
         data = {
