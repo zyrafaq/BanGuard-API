@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='banguard-api',
-    version='0.1.1',
+    version='0.1.2',
     author='Zyrafaq',
     author_email='contact@zyrafaq.com',
     description='Python API wrapper for BanGuard API',
