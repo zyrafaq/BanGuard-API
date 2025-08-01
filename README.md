@@ -6,7 +6,7 @@ Based on this [API documentation](https://banguard.uk/api-docs)
 
 ## Installation
 
-Install the `banguard-api` package using `pip`:
+Install the `banguard-api` package using pip:
 
 ### Windows
 
