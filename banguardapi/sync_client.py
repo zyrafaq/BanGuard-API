@@ -1,3 +1,5 @@
+from typing import Optional
+
 import requests
 
 from .ban import Ban
@@ -100,6 +102,19 @@ class Client:
         return TerrariaPlayer(response["player"]["id"], response["player"]["latest_name"], player_uuid,
                               discord_id=response["player"]["discord_id"],
                               discord_account_name=response["player"]["discord_account_name"])
+
+    def get_player_bans(self, player: TerrariaPlayer, ip: Optional[str]=None, name: Optional[str]=None) -> list[Ban]:
+        """Fetch all bans for a player"""
+        data = {
+            "player_uuid": player.terraria_uuid,
+        }
+        if ip:
+            data["player_ip"] = ip
+        if name:
+            data["player_name"] = name
+
+        response = self._request("POST", "check-player-ban", data=data)
+        return [Ban(ban["id"], player, ban["category"], ban.get("server")) for ban in response["bans"]]
 
     def new_connection_code(self, player: TerrariaPlayer) -> ConnectionCode:
         """Create a new connection code for a player"""
