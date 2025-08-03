@@ -1,7 +1,6 @@
 import aiohttp
 
 from .ban import Ban
-from .connection_code import ConnectionCode
 from .exceptions import *
 from .terraria_player import TerrariaPlayer
 
@@ -110,21 +109,7 @@ class Client:
             response["player"]["id"],
             response["player"]["latest_name"],
             player_uuid,
-            discord_id=response["player"]["discord_id"],
-            discord_account_name=response["player"]["discord_account_name"],
         )
-
-    async def new_connection_code(self, player: TerrariaPlayer) -> ConnectionCode:
-        """Create a new connection code for a player"""
-        json_data = {
-            "player_uuid": player.terraria_uuid,
-        }
-        response = await self._request("POST", "new-connection-code", data=json_data)
-        return ConnectionCode(response["code"], player, response["expiration_time"])
-
-    async def check_connection_code(self, code: str) -> bool:
-        response = await self._request("GET", "check-code", params={"code": code})
-        return bool(response["valid"])
 
     async def get_ban_categories(self) -> list:
         """Fetch the list of ban categories from the API"""
