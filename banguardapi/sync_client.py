@@ -63,7 +63,10 @@ class Client:
 
     def is_token_valid(self) -> bool:
         """Return True if the token is valid, False otherwise."""
-        data = self._request("GET", "check-token")
+        try:
+            data = self._request("GET", "check-token")
+        except AuthenticationError:
+            return False
         return data.get("valid", False)
 
     def get_ban_count(self) -> int:

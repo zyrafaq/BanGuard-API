@@ -70,7 +70,10 @@ class Client:
 
     async def is_token_valid(self) -> bool:
         """Return True if the token is valid, False otherwise."""
-        data = await self._request("GET", "check-token")
+        try:
+            data = await self._request("GET", "check-token")
+        except AuthenticationError:
+            return False
         return data.get("valid", False)
 
     async def get_ban_count(self) -> int:
