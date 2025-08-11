@@ -10,3 +10,7 @@ class Server:
 
     def __repr__(self):
         return self.__str__()
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Server':
+        return cls(id=data["id"], name=data["name"])

@@ -12,3 +12,11 @@ class TerrariaPlayer:
 
     def __repr__(self):
         return self.__str__()
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "TerrariaPlayer":
+        return cls(
+            id=data.get("id"),
+            latest_name=data.get("latest_name"),
+            terraria_uuid=data.get("terraria_uuid")
+        )
