@@ -8,15 +8,16 @@ from .terraria_player import TerrariaPlayer
 class Client:
     BASE_URL = "https://banguard.uk/api/"
 
-    def __init__(self, token: str, check_token: bool = True):
+    def __init__(self, token: str, check_token: bool = True, timeout: int = 10):
         self._token = token
+        self._timeout = timeout
         self._session = None  # Will be initialized in async context
 
         self._headers = {"Authorization": self._token}
         self._check_token = check_token
 
     async def __aenter__(self):
-        self._session = aiohttp.ClientSession(headers=self._headers)
+        self._session = aiohttp.ClientSession(headers=self._headers, timeout=aiohttp.ClientTimeout(total=self._timeout))
         if self._check_token:
             if not await self.is_token_valid():
                 await self._session.close()

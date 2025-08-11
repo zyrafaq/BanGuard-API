@@ -10,8 +10,9 @@ from .terraria_player import TerrariaPlayer
 class Client:
     BASE_URL = "https://banguard.uk/api/"
 
-    def __init__(self, token: str, check_token: bool = True):
+    def __init__(self, token: str, check_token: bool = True, timeout: int = 10):
         self._token = token
+        self._timeout = timeout
         self._session = requests.Session()
         self._session.headers.update({"Authorization": self._token})
 
@@ -23,7 +24,7 @@ class Client:
         url = f"{self.BASE_URL}{endpoint}"
 
         try:
-            response = self._session.request(method, url, timeout=10, **kwargs)
+            response = self._session.request(method, url, timeout=self._timeout, **kwargs)
             response.raise_for_status()
         except requests.exceptions.HTTPError as e:
             status_code = response.status_code
