@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 import aiohttp
 
@@ -93,13 +93,20 @@ class Client:
         response = await self._request("POST", "ban-player", data=json_data)
         return Ban(response["ban"]["id"], player, category)
 
-    async def unban_player(self, ban: Ban) -> None:
+    async def unban_player(self, ban: Union[Ban, int]) -> None:
         """Unban a player"""
-        json_data = {
-            "ban_id": ban.id,
-        }
+        if isinstance(ban, int):
+            data = {
+                "ban_id": ban,
+            }
+        elif isinstance(ban, Ban):
+            data = {
+                "ban_id": ban.id,
+            }
+        else:
+            raise TypeError("ban must be an instance of Ban or an integer representing the ban ID.")
         try:
-            await self._request("POST", "unban-player", data=json_data)
+            await self._request("POST", "unban-player", data=data)
         except NotFoundError as e:
             raise PlayerNotFoundError(str(e)) from e
 
