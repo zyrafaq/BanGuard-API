@@ -20,3 +20,10 @@ class TerrariaPlayer:
             latest_name=data.get("latest_name"),
             terraria_uuid=data.get("terraria_uuid")
         )
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "latest_name": self.latest_name,
+            "terraria_uuid": self.terraria_uuid
+        }
