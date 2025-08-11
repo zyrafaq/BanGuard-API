@@ -84,9 +84,9 @@ class Client:
         response = self._request("POST", "ban-player", data=data)
         return Ban(response["ban"]["id"], player, category)
 
-    def unban_player(self, ban: Union[Ban, int]) -> None:
+    def unban_player(self, ban: Union[Ban, str]) -> None:
         """Unban a player"""
-        if isinstance(ban, int):
+        if isinstance(ban, str):
             data = {
                 "ban_id": ban,
             }

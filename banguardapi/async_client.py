@@ -93,9 +93,9 @@ class Client:
         response = await self._request("POST", "ban-player", data=json_data)
         return Ban(response["ban"]["id"], player, category)
 
-    async def unban_player(self, ban: Union[Ban, int]) -> None:
+    async def unban_player(self, ban: Union[Ban, str]) -> None:
         """Unban a player"""
-        if isinstance(ban, int):
+        if isinstance(ban, str):
             data = {
                 "ban_id": ban,
             }
