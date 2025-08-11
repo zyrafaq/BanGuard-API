@@ -1,5 +1,8 @@
+from typing import Optional
+
 import aiohttp
 
+from .server import Server
 from .ban import Ban
 from .exceptions import *
 from .terraria_player import TerrariaPlayer
@@ -114,6 +117,20 @@ class Client:
             response["player"]["latest_name"],
             player_uuid,
         )
+
+    async def get_player_bans(self, player: TerrariaPlayer, ip: Optional[str] = None, name: Optional[str] = None) -> \
+    list[Ban]:
+        """Fetch all bans for a player asynchronously"""
+        json_data = {
+            "player_uuid": player.terraria_uuid,
+        }
+        if ip:
+            json_data["player_ip"] = ip
+        if name:
+            json_data["player_name"] = name
+
+        response = await self._request("POST", "check-player-ban", json=json_data)
+        return [Ban(ban["id"], player, ban["category"], Server(ban["server"]["id"], ban["server"]["name"])) for ban in response["bans"]]
 
     async def get_ban_categories(self) -> list:
         """Fetch the list of ban categories from the API"""
