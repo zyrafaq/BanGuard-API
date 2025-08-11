@@ -1,6 +1,7 @@
 from typing import Optional
 
 import requests
+from .server import Server
 
 from .ban import Ban
 from .exceptions import *
@@ -116,7 +117,7 @@ class Client:
             data["player_name"] = name
 
         response = self._request("POST", "check-player-ban", data=data)
-        return [Ban(ban["id"], player, ban["category"], ban.get("server")) for ban in response["bans"]]
+        return [Ban(ban["id"], player, ban["category"], Server(ban["server"]["id"], ban["server"]["name"])) for ban in response["bans"]]
 
     def get_ban_categories(self) -> list:
         """Fetch the list of ban categories from the API"""
