@@ -15,7 +15,8 @@ setup(
         'requests>=2.25.1',
         'pydantic>=1.8.2',
         'aiohttp>=3.11.2',
-        'typer>=0.4.0',
+        'typer>=0.16.0',
+        'yaspin>=3.0.0',
     ],
     entry_points={
         "console_scripts": [
