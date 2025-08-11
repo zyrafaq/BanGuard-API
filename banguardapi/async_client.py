@@ -2,7 +2,6 @@ from typing import Optional, Union
 
 import aiohttp
 
-from .server import Server
 from .ban import Ban
 from .exceptions import *
 from .terraria_player import TerrariaPlayer
@@ -91,7 +90,8 @@ class Client:
             "category": category,
         }
         response = await self._request("POST", "ban-player", data=json_data)
-        return Ban(response["ban"]["id"], player, category)
+        return Ban.from_dict(
+            {**response["ban"], "player": player, "category": category, "server": response["server"]})
 
     async def unban_player(self, ban: Union[Ban, str]) -> None:
         """Unban a player"""
@@ -119,14 +119,10 @@ class Client:
             response = await self._request("POST", "get-player", data=json_data)
         except NotFoundError as e:
             raise PlayerNotFoundError(str(e)) from e
-        return TerrariaPlayer(
-            response["player"]["id"],
-            response["player"]["latest_name"],
-            player_uuid,
-        )
+        return TerrariaPlayer.from_dict(response.get("player", {}))
 
     async def get_player_bans(self, player: TerrariaPlayer, ip: Optional[str] = None, name: Optional[str] = None) -> \
-    list[Ban]:
+            list[Ban]:
         """Fetch all bans for a player asynchronously"""
         json_data = {
             "player_uuid": player.terraria_uuid,
@@ -137,7 +133,7 @@ class Client:
             json_data["player_name"] = name
 
         response = await self._request("POST", "check-player-ban", json=json_data)
-        return [Ban(ban["id"], player, ban["category"], Server(ban["server"]["id"], ban["server"]["name"])) for ban in response["bans"]]
+        return [Ban.from_dict({**ban_data, "player": player}) for ban_data in response.get("bans", [])]
 
     async def get_ban_categories(self) -> list:
         """Fetch the list of ban categories from the API"""

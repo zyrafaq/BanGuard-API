@@ -1,7 +1,6 @@
 from typing import Optional, Union
 
 import requests
-from .server import Server
 
 from .ban import Ban
 from .exceptions import *
@@ -82,7 +81,8 @@ class Client:
             "category": category,
         }
         response = self._request("POST", "ban-player", data=data)
-        return Ban(response["ban"]["id"], player, category)
+        return Ban.from_dict(
+            {**response["ban"], "player": player, "category": category, "server": response["server"]})
 
     def unban_player(self, ban: Union[Ban, str]) -> None:
         """Unban a player"""
@@ -110,7 +110,7 @@ class Client:
             response = self._request("POST", "get-player", data=data)
         except NotFoundError as e:
             raise PlayerNotFoundError(str(e)) from e
-        return TerrariaPlayer(response["player"]["id"], response["player"]["latest_name"], player_uuid)
+        return TerrariaPlayer.from_dict(response.get("player", {}))
 
     def get_player_bans(self, player: TerrariaPlayer, ip: Optional[str] = None, name: Optional[str] = None) -> list[
         Ban]:
@@ -124,7 +124,7 @@ class Client:
             data["player_name"] = name
 
         response = self._request("POST", "check-player-ban", data=data)
-        return [Ban(ban["id"], player, ban["category"], Server(ban["server"]["id"], ban["server"]["name"])) for ban in response["bans"]]
+        return [Ban.from_dict({**ban_data, "player": player}) for ban_data in response.get("bans", [])]
 
     def get_ban_categories(self) -> list:
         """Fetch the list of ban categories from the API"""
